@@ -33,4 +33,20 @@ public class VideoDto implements Serializable {
     this.delivery = entity.getDelivery();
   }
 
+  public MultipartFile getFile() {
+    return file;
+  }
+
+  public void setFile(MultipartFile file) {
+    this.file = file;
+  }
+
+  public Delivery getDelivery() {
+    return delivery;
+  }
+
+  public void setDelivery(Delivery delivery) {
+    this.delivery = delivery;
+  }
+
 }
