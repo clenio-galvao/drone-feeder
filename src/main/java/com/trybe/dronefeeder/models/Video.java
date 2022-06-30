@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -19,7 +20,9 @@ public class Video implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String name;
-  // bring delivery to here and include relationship one to one
+  
+  @OneToOne(mappedBy = "video")
+  private Delivery delivery;
 
   public Long getId() {
     return id;
@@ -35,5 +38,13 @@ public class Video implements Serializable {
   
   public void setName(String name) {
     this.name = name;
+  }
+
+  public Delivery getDelivery() {
+    return delivery;
+  }
+
+  public void setDelivery(Delivery delivery) {
+    this.delivery = delivery;
   }
 }
