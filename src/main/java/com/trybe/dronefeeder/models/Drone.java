@@ -1,4 +1,4 @@
-package com.trybe.dronefeeder.model;
+package com.trybe.dronefeeder.models;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,6 +14,14 @@ public class Drone implements Serializable {
     private Long id;
     private String brand;
     private String model;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getBrand() {
         return brand;
