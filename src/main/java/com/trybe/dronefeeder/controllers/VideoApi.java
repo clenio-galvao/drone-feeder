@@ -1,13 +1,20 @@
 package com.trybe.dronefeeder.controllers;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.trybe.dronefeeder.dtos.VideoDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
+import java.io.IOException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 /** Video API interface. */
 @Api(value = "Video", tags = "Video")
@@ -17,8 +24,10 @@ public interface VideoApi {
   public ResponseEntity<Page<VideoDto>> findAll(Pageable pageable);
 
   @ApiOperation(value = "Upload a new video", tags = "Video")
-  public ResponseEntity<VideoDto> upload(@RequestBody VideoDto videoDto);
+  public ResponseEntity<VideoDto> upload(
+      @RequestParam MultipartFile file, @RequestBody VideoDto videoDto)
+      throws AmazonServiceException, SdkClientException, IOException;
 
   @ApiOperation(value = "Download a new video", tags = "Video")
-  public ResponseEntity<VideoDto> download(@PathVariable Long id);
+  public ResponseEntity<byte[]> download(@PathVariable Long id) throws IOException;
 }

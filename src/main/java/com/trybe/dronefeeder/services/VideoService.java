@@ -8,6 +8,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
+import com.trybe.dronefeeder.dtos.VideoDto;
 import com.trybe.dronefeeder.models.Delivery;
 import com.trybe.dronefeeder.models.Video;
 import com.trybe.dronefeeder.repositories.VideoRepository;
@@ -15,10 +16,11 @@ import com.trybe.dronefeeder.services.exceptions.ResourceNotFoundException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,9 +37,9 @@ public class VideoService {
   private String bucketName = "drone-feeder-trybe";
   
   @Transactional(readOnly = true)
-  public List<Video> findAll() {
-    List<Video> videos = videoRepository.findAll(); 
-    return videos;
+  public Page<VideoDto> findAll(Pageable pageable) {
+    Page<Video> videos = videoRepository.findAll(pageable); 
+    return videos.map(VideoDto::new);
   }
   
   /** find by id method. */
@@ -51,7 +53,7 @@ public class VideoService {
   
   /** upload method. */
   @Transactional
-  public Video upload(Delivery delivery, MultipartFile file) throws
+  public VideoDto upload(Delivery delivery, MultipartFile file) throws
       AmazonServiceException, SdkClientException, IOException {
     File fileObj = convertMultipartFileToFile(file);
     String fileName = DateTime.now() + "-delivery-" + delivery.getId();
@@ -65,7 +67,7 @@ public class VideoService {
     
     videoRepository.save(video);
     
-    return video;
+    return new VideoDto(video);
   }
   
   /** download method. */
