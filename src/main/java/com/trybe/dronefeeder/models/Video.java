@@ -1,6 +1,7 @@
 package com.trybe.dronefeeder.models;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -46,5 +47,22 @@ public class Video implements Serializable {
 
   public void setDelivery(Delivery delivery) {
     this.delivery = delivery;
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Video video = (Video) o;
+    return Objects.equals(id, video.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
   }
 }
