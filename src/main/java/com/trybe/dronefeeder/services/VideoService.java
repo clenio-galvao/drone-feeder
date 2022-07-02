@@ -53,9 +53,14 @@ public class VideoService {
   
   /** upload method. */
   @Transactional
-  public VideoDto upload(Delivery delivery, MultipartFile file) throws
+  public VideoDto upload(long deliveryId, MultipartFile file) throws
       AmazonServiceException, SdkClientException, IOException {
     File fileObj = convertMultipartFileToFile(file);
+    
+    // Fazer um findById na tabela delivery e retirar próximas duas linhas
+    Delivery delivery = new Delivery();
+    delivery.setId(deliveryId);
+    
     String fileName = DateTime.now() + "-delivery-" + delivery.getId();
     
     clientS3.putObject(bucketName, fileName, fileObj);
@@ -65,9 +70,12 @@ public class VideoService {
     video.setName(fileName);
     video.setDelivery(delivery);
     
-    videoRepository.save(video);
+    Video videoSent = videoRepository.save(video);
     
-    return new VideoDto(video);
+    // Não está salvando na tabela delivery o video automaticamente
+    // é necessário realizar o update na tabela delivery na coluna video ??
+    // ou quando usar o objeto vindo do findById já resolve o problema?
+    return new VideoDto(videoSent);
   }
   
   /** download method. */

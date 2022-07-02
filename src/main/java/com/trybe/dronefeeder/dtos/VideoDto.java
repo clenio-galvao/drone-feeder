@@ -1,14 +1,8 @@
 package com.trybe.dronefeeder.dtos;
 
-import static com.trybe.dronefeeder.utils.Messages.VALIDATION_VIDEO_DELIVERY_IS_EMPTY;
-import static com.trybe.dronefeeder.utils.Messages.VALIDATION_VIDEO_DELIVERY_IS_REQUIRED;
-
-import com.trybe.dronefeeder.models.Delivery;
 import com.trybe.dronefeeder.models.Video;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 /** Class VideoDto. */
 public class VideoDto implements Serializable {
@@ -17,25 +11,25 @@ public class VideoDto implements Serializable {
   @ApiModelProperty(notes = "Video ID", example = "7")
   private Long id;
   
-  @NotEmpty(message = VALIDATION_VIDEO_DELIVERY_IS_EMPTY)
-  @NotNull(message = VALIDATION_VIDEO_DELIVERY_IS_REQUIRED)
-  @ApiModelProperty(notes = "delivery: id", required = true)
-  private Delivery delivery;
+  private long deliveryId;
   
   private String name;
   
   public VideoDto() {}
   
+  /** constructor method. */
   public VideoDto(Video entity) {
-    this.delivery = entity.getDelivery();
+    this.id = entity.getId();
+    this.deliveryId = entity.getDelivery().getId();
+    this.name = entity.getName();
   }
 
-  public Delivery getDelivery() {
-    return delivery;
+  public long getDeliveryId() {
+    return deliveryId;
   }
 
-  public void setDelivery(Delivery delivery) {
-    this.delivery = delivery;
+  public void setDeliveryId(long deliveryId) {
+    this.deliveryId = deliveryId;
   }
 
   public Long getId() {

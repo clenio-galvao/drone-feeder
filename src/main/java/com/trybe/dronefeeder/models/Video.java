@@ -2,10 +2,14 @@ package com.trybe.dronefeeder.models;
 
 import java.io.Serializable;
 import java.util.Objects;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -22,7 +26,8 @@ public class Video implements Serializable {
   private Long id;
   private String name;
   
-  @OneToOne(mappedBy = "video")
+  @JoinColumn(name = "delivery_id")
+  @OneToOne(fetch = FetchType.LAZY)
   private Delivery delivery;
 
   public Long getId() {
