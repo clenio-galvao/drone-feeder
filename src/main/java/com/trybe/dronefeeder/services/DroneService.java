@@ -47,7 +47,7 @@ public class DroneService {
     @Transactional
     public DroneDto update(Long id, DroneDto dto) {
         try {
-            Drone entity = droneRepository.getById(id);
+            Drone entity = droneRepository.getReferenceById(id);
             copyDtoToEntityUpdate(dto, entity);
             entity = droneRepository.save(entity);
             return new DroneDto(entity);
@@ -86,7 +86,7 @@ public class DroneService {
         if (field.trim().isEmpty()) {
             throw new ResourceNotFoundException(VALIDATION_BRAND_IS_EMPTY);
         }
-        if (field.trim().length() < 3 || field.trim().length() > 100) {
+        if (field.trim().length() < 3 || field.trim().length() > 50) {
             throw new ResourceNotFoundException(VALIDATION_BRAND_SIZE);
         }
     }
@@ -95,7 +95,7 @@ public class DroneService {
         if (field.trim().isEmpty()) {
             throw new ResourceNotFoundException(VALIDATION_MODEL_IS_EMPTY);
         }
-        if (field.trim().length() < 3 || field.trim().length() > 240) {
+        if (field.trim().length() < 3 || field.trim().length() > 50) {
             throw new ResourceNotFoundException(VALIDATION_MODEL_SIZE);
         }
     }
