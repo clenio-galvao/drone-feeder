@@ -5,6 +5,7 @@ import com.trybe.dronefeeder.services.DroneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -34,7 +35,7 @@ public class DroneContoller implements DroneApi {
         droneDto = droneService.create(droneDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
                 .buildAndExpand(droneDto.getId()).toUri();
-        return ResponseEntity.created(uri).body(droneDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(droneDto);
     }
 
     @PutMapping(value = "/{id}")
