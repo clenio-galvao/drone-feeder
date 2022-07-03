@@ -2,6 +2,7 @@ package com.trybe.dronefeeder.models;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,9 +16,20 @@ public class Drone implements Serializable {
     private Long id;
     private String brand;
     private String model;
-    
+
     @OneToMany(mappedBy = "drone", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Delivery> deliveries;
+
+    public Drone(Long id, String brand, String model) {
+        this.id = id;
+        this.brand = brand;
+        this.model = model;
+        this.deliveries = new ArrayList<Delivery>();
+    }
+
+    public Drone() {
+
+    }
 
     public Long getId() {
         return id;
