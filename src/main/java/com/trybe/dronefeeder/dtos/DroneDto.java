@@ -33,6 +33,12 @@ public class DroneDto implements Serializable {
     public DroneDto() {
     }
 
+    public DroneDto(Long id, String brand, String model) {
+        this.id = id;
+        this.brand = brand;
+        this.model = model;
+    }
+
     public DroneDto(Drone entity) {
         this.id = entity.getId();
         this.brand = entity.getBrand();
