@@ -8,7 +8,7 @@ import com.trybe.dronefeeder.models.Delivery;
 import com.trybe.dronefeeder.models.Drone;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -31,7 +31,7 @@ public class DeliveryDto implements Serializable {
   @Size(min = 7, max = 10, message = "longitudeWithdrawal" + VALIDATION_SIZE)
   @ApiModelProperty(notes = "longitude pacage withdrawal", example = "2.17403", required = true)
   private String longitudeWithdrawal;
-  private Date dateWithdrawal;
+  private LocalDateTime dateWithdrawal;
 
   @NotEmpty(message = "latitudeDelivery" + VALIDATION_IS_EMPTY)
   @NotNull(message = "latitudeDelivery" + VALIDATION_IS_REQUIRED)
@@ -44,7 +44,7 @@ public class DeliveryDto implements Serializable {
   @Size(min = 7, max = 10, message = "longitudeDelivery" + VALIDATION_SIZE)
   @ApiModelProperty(notes = "longitude pacage delivery", example = "2.17403", required = true)
   private String longitudeDelivery;
-  private Date dateDelivery;
+  private LocalDateTime dateDelivery;
 
   private String videoNameDelivery;
   
@@ -92,11 +92,11 @@ public class DeliveryDto implements Serializable {
     this.longitudeWithdrawal = longitudeWithdrawal;
   }
 
-  public Date getDateWithdrawal() {
+  public LocalDateTime getDateWithdrawal() {
     return dateWithdrawal;
   }
 
-  public void setDateWithdrawal(Date dateWithdrawal) {
+  public void setDateWithdrawal(LocalDateTime dateWithdrawal) {
     this.dateWithdrawal = dateWithdrawal;
   }
 
@@ -116,11 +116,11 @@ public class DeliveryDto implements Serializable {
     this.longitudeDelivery = longitudeDelivery;
   }
 
-  public Date getDateDelivery() {
+  public LocalDateTime getDateDelivery() {
     return dateDelivery;
   }
 
-  public void setDateDelivery(Date dateDelivery) {
+  public void setDateDelivery(LocalDateTime dateDelivery) {
     this.dateDelivery = dateDelivery;
   }
 
