@@ -20,14 +20,14 @@ public class DroneDto implements Serializable {
 
     @NotEmpty(message = VALIDATION_BRAND_IS_EMPTY)
     @NotNull(message = VALIDATION_BRAND_IS_REQUIRED)
-    @Size(min = 3, max = 100, message = VALIDATION_BRAND_SIZE)
-    @ApiModelProperty(notes = "Drone brand", example = "LG", required = true)
+    @Size(min = 3, max = 50, message = VALIDATION_BRAND_SIZE)
+    @ApiModelProperty(notes = "Drone brand", example = "LG K6D3", required = true)
     private String brand;
 
     @NotEmpty(message = VALIDATION_MODEL_IS_EMPTY)
     @NotNull(message = VALIDATION_MODEL_IS_REQUIRED)
-    @Size(min = 3, max = 240, message = VALIDATION_MODEL_SIZE)
-    @ApiModelProperty(notes = "Drone model", example = "12D", required = true)
+    @Size(min = 3, max = 50, message = VALIDATION_MODEL_SIZE)
+    @ApiModelProperty(notes = "Drone model", example = "12DD", required = true)
     private String model;
 
     public DroneDto() {
@@ -41,10 +41,6 @@ public class DroneDto implements Serializable {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getBrand() {
