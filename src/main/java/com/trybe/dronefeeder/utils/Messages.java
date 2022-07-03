@@ -11,4 +11,8 @@ public class Messages {
     public static final String EXCEPTION_RESOURCE_NOT_FOUND = "Resource not found.";
     public static final String EXCEPTION_ID_NOT_FOUND = "Id not found ";
     public static final String EXCEPTION_ENTITY_NOT_FOUND = "Entity not found.";
+    
+    public static final String VALIDATION_IS_REQUIRED = " is required.";
+    public static final String VALIDATION_IS_EMPTY = " cannot be empty.";
+    public static final String VALIDATION_SIZE = " must have a minimum of 3 characters and a maximum of 100.";
 }
