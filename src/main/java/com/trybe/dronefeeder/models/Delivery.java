@@ -1,7 +1,6 @@
 package com.trybe.dronefeeder.models;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-/** model class delivery. */
+/**
+ * model class delivery.
+ */
 @Entity
 @Table(name = "tb_delivery")
 public class Delivery implements Serializable {
@@ -23,14 +24,14 @@ public class Delivery implements Serializable {
   private Long id;
   private String latitudeWithdrawal;
   private String longitudeWithdrawal;
-  private Date dateWithdrawal;
+  private String dateWithdrawal;
 
   private String latitudeDelivery;
   private String longitudeDelivery;
-  private Date dateDelivery;
+  private String dateDelivery;
 
   private String videoNameDelivery;
-  
+
   @ManyToOne
   @JoinColumn(name = "drone_id")
   private Drone drone;
@@ -67,11 +68,11 @@ public class Delivery implements Serializable {
     this.longitudeWithdrawal = longitudeWithdrawal;
   }
 
-  public Date getDateWithdrawal() {
+  public String getDateWithdrawal() {
     return dateWithdrawal;
   }
 
-  public void setDateWithdrawal(Date dateWithdrawal) {
+  public void setDateWithdrawal(String dateWithdrawal) {
     this.dateWithdrawal = dateWithdrawal;
   }
 
@@ -91,11 +92,11 @@ public class Delivery implements Serializable {
     this.longitudeDelivery = longitudeDelivery;
   }
 
-  public Date getDateDelivery() {
+  public String getDateDelivery() {
     return dateDelivery;
   }
 
-  public void setDateDelivery(Date dateDelivery) {
+  public void setDateDelivery(String dateDelivery) {
     this.dateDelivery = dateDelivery;
   }
 
@@ -109,7 +110,7 @@ public class Delivery implements Serializable {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) { 
+    if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
