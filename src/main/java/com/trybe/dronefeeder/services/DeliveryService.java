@@ -8,13 +8,24 @@ import static com.trybe.dronefeeder.utils.Messages.VALIDATION_IS_REQUIRED;
 import static com.trybe.dronefeeder.utils.Messages.VALIDATION_SIZE;
 import static java.util.Objects.isNull;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.amazonaws.util.IOUtils;
 import com.trybe.dronefeeder.dtos.DeliveryDto;
 import com.trybe.dronefeeder.models.Delivery;
 import com.trybe.dronefeeder.models.Drone;
 import com.trybe.dronefeeder.repositories.DeliveryRepository;
 import com.trybe.dronefeeder.repositories.DroneRepository;
 import com.trybe.dronefeeder.services.exceptions.ResourceNotFoundException;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -22,6 +33,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 /** delivery service class. */
 @Service
@@ -32,6 +44,10 @@ public class DeliveryService {
   
   @Autowired
   private DroneRepository droneRepository;
+  
+  @Autowired
+  private AmazonS3 clientS3;
+  private String bucketName = "drone-feeder-trybe";
   
   @Transactional(readOnly = true)
   public Page<DeliveryDto> findAllPaged(Pageable pageable) {
@@ -60,11 +76,65 @@ public class DeliveryService {
   /** update method. */
   @Transactional
   public DeliveryDto update(Long id, DeliveryDto dto) {
+    Delivery entity = getById(id);
+    copyDtoToEntityUpdate(dto, entity);
+    entity = deliveryRepository.save(entity);
+    return new DeliveryDto(entity);
+  }
+
+  /** collected package method. */
+  @Transactional
+  public DeliveryDto collectedPackage(Long id) {
+    Delivery entity = getById(id);
+    entity.setDateWithdrawal(LocalDateTime.now());
+    entity = deliveryRepository.save(entity);
+    return new DeliveryDto(entity);
+  }
+
+  /**
+   * package delivered method. 
+   * []@throws IOException exception
+   * */
+  @Transactional
+  public DeliveryDto packageDelivered(Long id, MultipartFile file) throws IOException {
+    File fileObj = convertMultipartFileToFile(file);
+    Delivery entity = getById(id);
+  
+    LocalDateTime newDate = LocalDateTime.now();
+    entity.setDateDelivery(newDate);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String fileName = newDate.format(formatter) + "-delivery-" + id;
+  
+    entity.setVideoNameDelivery(fileName);
+    clientS3.putObject(bucketName, fileName, fileObj);
+    fileObj.delete();
+  
+    entity = deliveryRepository.save(entity);
+    return new DeliveryDto(entity);
+  }
+  
+  @Transactional(readOnly = true)
+  public List<String> findAllVideos() {
+    List<Delivery> deliveries = deliveryRepository.findAll();
+    return deliveries.stream().map(Delivery::getVideoNameDelivery).collect(Collectors.toList());
+  }
+  
+  /** download method. */
+  @Transactional(readOnly = true)
+  public byte[] download(Long id) throws IOException {
+    Delivery entity = getById(id);
+    S3Object s3Object = clientS3.getObject(bucketName, entity.getVideoNameDelivery());
+    S3ObjectInputStream inputStream = s3Object.getObjectContent();
+  
+    byte[] content = IOUtils.toByteArray(inputStream);
+    return content;
+  }
+  
+  @Transactional(readOnly = true)
+  private Delivery getById(Long id) {
     try {
       Delivery entity = deliveryRepository.getById(id);
-      copyDtoToEntityUpdate(dto, entity);
-      entity = deliveryRepository.save(entity);
-      return new DeliveryDto(entity);
+      return entity;
     } catch (EntityNotFoundException e) {
       throw new ResourceNotFoundException(EXCEPTION_ID_NOT_FOUND + id + ".");
     }
@@ -182,5 +252,17 @@ public class DeliveryService {
     if (isNull(dto.getDrone())) {
       throw new ResourceNotFoundException("Drone" + VALIDATION_IS_REQUIRED);
     }
+  }
+  
+  private File convertMultipartFileToFile(MultipartFile file) throws IOException {
+    File convertedFile = new File(file.getOriginalFilename());
+
+    try (FileOutputStream fos = new FileOutputStream(convertedFile)) {
+      fos.write(file.getBytes());
+    } catch (IOException e) {
+      throw new IOException();
+    }
+
+    return convertedFile;
   }
 }

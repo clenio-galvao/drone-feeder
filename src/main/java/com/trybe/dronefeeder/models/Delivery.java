@@ -1,7 +1,7 @@
 package com.trybe.dronefeeder.models;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,11 +23,11 @@ public class Delivery implements Serializable {
   private Long id;
   private String latitudeWithdrawal;
   private String longitudeWithdrawal;
-  private Date dateWithdrawal;
+  private LocalDateTime dateWithdrawal;
 
   private String latitudeDelivery;
   private String longitudeDelivery;
-  private Date dateDelivery;
+  private LocalDateTime dateDelivery;
 
   private String videoNameDelivery;
   
@@ -67,11 +67,11 @@ public class Delivery implements Serializable {
     this.longitudeWithdrawal = longitudeWithdrawal;
   }
 
-  public Date getDateWithdrawal() {
+  public LocalDateTime getDateWithdrawal() {
     return dateWithdrawal;
   }
 
-  public void setDateWithdrawal(Date dateWithdrawal) {
+  public void setDateWithdrawal(LocalDateTime dateWithdrawal) {
     this.dateWithdrawal = dateWithdrawal;
   }
 
@@ -91,11 +91,11 @@ public class Delivery implements Serializable {
     this.longitudeDelivery = longitudeDelivery;
   }
 
-  public Date getDateDelivery() {
+  public LocalDateTime getDateDelivery() {
     return dateDelivery;
   }
 
-  public void setDateDelivery(Date dateDelivery) {
+  public void setDateDelivery(LocalDateTime dateDelivery) {
     this.dateDelivery = dateDelivery;
   }
 
