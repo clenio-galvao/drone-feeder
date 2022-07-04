@@ -1,6 +1,7 @@
 package com.trybe.dronefeeder.models;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,9 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-/**
- * model class delivery.
- */
+/** model class delivery. */
 @Entity
 @Table(name = "tb_delivery")
 public class Delivery implements Serializable {
@@ -24,14 +23,14 @@ public class Delivery implements Serializable {
   private Long id;
   private String latitudeWithdrawal;
   private String longitudeWithdrawal;
-  private String dateWithdrawal;
+  private LocalDateTime dateWithdrawal;
 
   private String latitudeDelivery;
   private String longitudeDelivery;
-  private String dateDelivery;
+  private LocalDateTime dateDelivery;
 
   private String videoNameDelivery;
-
+  
   @ManyToOne
   @JoinColumn(name = "drone_id")
   private Drone drone;
@@ -68,11 +67,11 @@ public class Delivery implements Serializable {
     this.longitudeWithdrawal = longitudeWithdrawal;
   }
 
-  public String getDateWithdrawal() {
+  public LocalDateTime getDateWithdrawal() {
     return dateWithdrawal;
   }
 
-  public void setDateWithdrawal(String dateWithdrawal) {
+  public void setDateWithdrawal(LocalDateTime dateWithdrawal) {
     this.dateWithdrawal = dateWithdrawal;
   }
 
@@ -92,11 +91,11 @@ public class Delivery implements Serializable {
     this.longitudeDelivery = longitudeDelivery;
   }
 
-  public String getDateDelivery() {
+  public LocalDateTime getDateDelivery() {
     return dateDelivery;
   }
 
-  public void setDateDelivery(String dateDelivery) {
+  public void setDateDelivery(LocalDateTime dateDelivery) {
     this.dateDelivery = dateDelivery;
   }
 
@@ -110,7 +109,7 @@ public class Delivery implements Serializable {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
+    if (this == o) { 
       return true;
     }
     if (o == null || getClass() != o.getClass()) {

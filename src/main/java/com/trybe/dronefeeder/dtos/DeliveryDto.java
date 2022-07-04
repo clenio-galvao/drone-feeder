@@ -8,59 +8,54 @@ import com.trybe.dronefeeder.models.Delivery;
 import com.trybe.dronefeeder.models.Drone;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-/**
- * dto class delivery.
- */
+/** dto class delivery. */
 public class DeliveryDto implements Serializable {
 
   private static final long serialVersionUID = -5319810718389636837L;
   @ApiModelProperty(notes = "Delivery", example = "7")
   private Long id;
-
+  
   @NotEmpty(message = "latitudeWithdrawal" + VALIDATION_IS_EMPTY)
   @NotNull(message = "latitudeWithdrawal" + VALIDATION_IS_REQUIRED)
   @Size(min = 7, max = 10, message = "latitudeWithdrawal" + VALIDATION_SIZE)
   @ApiModelProperty(notes = "latitude pacage withdrawal", example = "41.40338", required = true)
   private String latitudeWithdrawal;
-
+  
   @NotEmpty(message = "longitudeWithdrawal" + VALIDATION_IS_EMPTY)
   @NotNull(message = "longitudeWithdrawal" + VALIDATION_IS_REQUIRED)
   @Size(min = 7, max = 10, message = "longitudeWithdrawal" + VALIDATION_SIZE)
   @ApiModelProperty(notes = "longitude pacage withdrawal", example = "2.17403", required = true)
   private String longitudeWithdrawal;
-  private String dateWithdrawal;
+  private LocalDateTime dateWithdrawal;
 
   @NotEmpty(message = "latitudeDelivery" + VALIDATION_IS_EMPTY)
   @NotNull(message = "latitudeDelivery" + VALIDATION_IS_REQUIRED)
   @Size(min = 7, max = 10, message = "latitudeDelivery" + VALIDATION_SIZE)
   @ApiModelProperty(notes = "latitude pacage delivery", example = "41.40338", required = true)
   private String latitudeDelivery;
-
+  
   @NotEmpty(message = "longitudeDelivery" + VALIDATION_IS_EMPTY)
   @NotNull(message = "longitudeDelivery" + VALIDATION_IS_REQUIRED)
   @Size(min = 7, max = 10, message = "longitudeDelivery" + VALIDATION_SIZE)
   @ApiModelProperty(notes = "longitude pacage delivery", example = "2.17403", required = true)
   private String longitudeDelivery;
-  private String dateDelivery;
+  private LocalDateTime dateDelivery;
 
   private String videoNameDelivery;
-
+  
   @NotEmpty(message = "drone" + VALIDATION_IS_EMPTY)
   @NotNull(message = "drone" + VALIDATION_IS_REQUIRED)
   @ApiModelProperty(notes = "drone id", example = "2", required = true)
   private Drone drone;
-
-  public DeliveryDto() {
-  }
-
-
-  /**
-   * constructor method.
-   */
+  
+  public DeliveryDto() {}
+  
+  /** constructor method. */
   public DeliveryDto(Delivery entity) {
     this.id = entity.getId();
     this.latitudeWithdrawal = entity.getLatitudeWithdrawal();
@@ -97,11 +92,11 @@ public class DeliveryDto implements Serializable {
     this.longitudeWithdrawal = longitudeWithdrawal;
   }
 
-  public String getDateWithdrawal() {
+  public LocalDateTime getDateWithdrawal() {
     return dateWithdrawal;
   }
 
-  public void setDateWithdrawal(String dateWithdrawal) {
+  public void setDateWithdrawal(LocalDateTime dateWithdrawal) {
     this.dateWithdrawal = dateWithdrawal;
   }
 
@@ -121,11 +116,11 @@ public class DeliveryDto implements Serializable {
     this.longitudeDelivery = longitudeDelivery;
   }
 
-  public String getDateDelivery() {
+  public LocalDateTime getDateDelivery() {
     return dateDelivery;
   }
 
-  public void setDateDelivery(String dateDelivery) {
+  public void setDateDelivery(LocalDateTime dateDelivery) {
     this.dateDelivery = dateDelivery;
   }
 
