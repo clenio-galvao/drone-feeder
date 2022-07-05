@@ -2,6 +2,7 @@ package com.trybe.dronefeeder.models;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -14,6 +15,9 @@ public class Drone implements Serializable {
     private Long id;
     private String brand;
     private String model;
+    
+    @OneToMany(mappedBy = "drone", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Delivery> deliveries;
 
 
     public Drone(Long id, String brand, String model) {
