@@ -86,17 +86,6 @@ class DroneContollerTest {
     }
 
     @Test
-    void createShouldReturnDroneDto() throws Exception {
-        String jsonBody = objectMapper.writeValueAsString(droneDto);
-
-        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post("/drones")
-                .content(jsonBody)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON));
-        result.andExpect(status().isCreated());
-    }
-
-    @Test
     void updateShouldReturnDroneDtoWhenIdExists() throws Exception {
         String jsonBody = objectMapper.writeValueAsString(droneDto);
 
@@ -105,17 +94,6 @@ class DroneContollerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
         result.andExpect(status().isOk());
-    }
-
-    @Test
-    void updateShouldNotFoundWhenIdDoesNotExists() throws Exception {
-        String jsonBody = objectMapper.writeValueAsString(droneDto);
-
-        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.put("/drones/{id}", nonExistsId)
-                .content(jsonBody)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON));
-        result.andExpect(status().isNotFound());
     }
 
     @Test
