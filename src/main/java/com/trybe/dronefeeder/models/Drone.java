@@ -19,12 +19,18 @@ public class Drone implements Serializable {
     @OneToMany(mappedBy = "drone", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Delivery> deliveries;
 
-    public Long getId() {
-        return id;
+
+    public Drone(Long id, String brand, String model) {
+        this.id = id;
+        this.brand = brand;
+        this.model = model;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Drone() {
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getBrand() {
@@ -51,8 +57,4 @@ public class Drone implements Serializable {
         return Objects.equals(id, drone.id);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }
