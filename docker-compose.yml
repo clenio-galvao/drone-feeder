@@ -1,0 +1,27 @@
+version: "3.9"
+
+networks:
+  drone-feeder-network:
+    driver: bridge
+
+services:
+  drone-feeder-mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: db_drone_feeder
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+    ports:
+      - "3306:3306"
+    networks:
+      - drone-feeder-network
+
+  drone-feeder-api:
+    image: drone-feeder-api
+    environment:
+      DB_HOST: drone-feeder-mysql
+    ports:
+      - "8080:8080"
+    networks:
+      - drone-feeder-network
+    depends_on:
+      - drone-feeder-mysql
