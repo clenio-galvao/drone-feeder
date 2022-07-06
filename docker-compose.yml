@@ -17,6 +17,7 @@ services:
 
   drone-feeder-api:
     image: drone-feeder-api
+    build: .
     environment:
       DB_HOST: drone-feeder-mysql
     ports:
