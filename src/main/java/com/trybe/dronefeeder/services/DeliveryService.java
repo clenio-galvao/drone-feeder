@@ -25,11 +25,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,10 +51,19 @@ public class DeliveryService {
   private AmazonS3 clientS3;
   private String bucketName = "drone-feeder-trybe";
   
+  /** find all with filter. */
   @Transactional(readOnly = true)
-  public Page<DeliveryDto> findAllPaged(Pageable pageable) {
-    Page<Delivery> delivery = deliveryRepository.findAll(pageable);
-    return delivery.map(DeliveryDto::new);
+  public List<Delivery> findAll(Long droneId) {
+    List<Delivery> listDeliveries;
+    
+    if (droneId == 0) {    	
+      listDeliveries = deliveryRepository.findAll();
+    } else {
+      listDeliveries = deliveryRepository
+          .findAllByDrone(droneRepository.getById(droneId));
+    }
+    
+    return listDeliveries;
   }
   
   /** find by id method. */

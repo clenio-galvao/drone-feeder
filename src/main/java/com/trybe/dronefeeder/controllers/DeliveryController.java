@@ -1,6 +1,7 @@
 package com.trybe.dronefeeder.controllers;
 
 import com.trybe.dronefeeder.dtos.DeliveryDto;
+import com.trybe.dronefeeder.models.Delivery;
 import com.trybe.dronefeeder.services.DeliveryService;
 import java.io.IOException;
 import java.net.URI;
@@ -32,8 +33,9 @@ public class DeliveryController implements DeliveryApi {
   private DeliveryService deliveryService;
 
   @GetMapping
-  public ResponseEntity<Page<DeliveryDto>> findAll(Pageable pageable) {
-    Page<DeliveryDto> list = deliveryService.findAllPaged(pageable);
+  public ResponseEntity<List<Delivery>> findAll(
+      @RequestParam("droneId") Long droneId) {
+    List<Delivery> list = deliveryService.findAll(droneId);
     return ResponseEntity.ok(list);
   }
 
