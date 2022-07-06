@@ -8,11 +8,8 @@ services:
   drone-feeder-mysql:
     image: mysql:8.0
     environment:
-#      MYSQL_ROOT_PASSWORD: toor
       MYSQL_DATABASE: db_drone_feeder
       MYSQL_ALLOW_EMPTY_PASSWORD: yes
-#      MYSQL_USER: root
-#      MYSQL_PASSWORD: toor
     ports:
       - "3306:3306"
     networks:
