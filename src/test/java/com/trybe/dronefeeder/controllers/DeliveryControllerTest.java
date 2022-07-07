@@ -2,6 +2,7 @@ package com.trybe.dronefeeder.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.trybe.dronefeeder.dtos.DeliveryDto;
+import com.trybe.dronefeeder.models.Delivery;
 import com.trybe.dronefeeder.models.Drone;
 import com.trybe.dronefeeder.repositories.DeliveryRepository;
 import com.trybe.dronefeeder.services.DeliveryService;
@@ -12,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -46,6 +45,10 @@ class DeliveryControllerTest {
 
     @MockBean
     private DeliveryService deliveryService;
+
+    @MockBean
+    private Delivery delivery;
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -141,7 +144,7 @@ class DeliveryControllerTest {
     @DisplayName("Returns a Delivery list with size equals 3")
     void findAllDeliveryTest() throws Exception {
 
-        DeliveryDto dtoResponseInPage = new DeliveryDto();
+        Delivery dtoResponseInPage = new Delivery();
         dtoResponseInPage.setId(2L);
         dtoResponseInPage.setLatitudeWithdrawal(dcLatitude);
         dtoResponseInPage.setLongitudeWithdrawal(dcLongitude);
@@ -154,17 +157,17 @@ class DeliveryControllerTest {
         Drone drone2 = new Drone(2L, "LG", "22D");
         dtoResponseInPage.setDrone(drone2);
 
+        List<Delivery> inputList = new ArrayList<>();
         inputList.add(dtoResponseInPage);
 
-        Page<DeliveryDto> pageResponseMock = new PageImpl(inputList);
+        when(deliveryService.findAll(Mockito.any())).thenReturn(inputList);
 
-        when(deliveryService.findAllPaged(Mockito.any())).thenReturn(pageResponseMock);
-
-        mockMvc.perform(get("/deliveries"))
+        mockMvc.perform(get("/deliveries")
+                        .param("droneId", "0"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.content").isArray())
-                .andExpect(jsonPath("$.content", hasSize(1)));
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
