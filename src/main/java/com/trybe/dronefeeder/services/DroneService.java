@@ -2,6 +2,7 @@ package com.trybe.dronefeeder.services;
 
 import com.trybe.dronefeeder.dtos.DroneDto;
 import com.trybe.dronefeeder.models.Drone;
+import com.trybe.dronefeeder.repositories.DeliveryRepository;
 import com.trybe.dronefeeder.repositories.DroneRepository;
 import com.trybe.dronefeeder.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,12 @@ public class DroneService {
     @Autowired
     private DroneRepository droneRepository;
 
-    @Transactional(readOnly = true)
-    public Page<DroneDto> findAllPaged(Pageable pageable) {
-        Page<Drone> drones = droneRepository.findAll(pageable);
-        return drones.map(DroneDto::new);
-    }
+  /** find all paged drones. */
+  @Transactional(readOnly = true)
+  public Page<DroneDto> findAllPaged(Pageable pageable) {
+    Page<Drone> drones = droneRepository.findAll(pageable);
+    return drones.map(DroneDto::new);
+  }
 
     @Transactional(readOnly = true)
     public DroneDto findById(Long id) {

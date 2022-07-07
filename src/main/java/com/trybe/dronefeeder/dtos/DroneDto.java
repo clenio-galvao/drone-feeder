@@ -8,6 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
 
 import static com.trybe.dronefeeder.utils.Messages.*;
 
@@ -29,8 +30,10 @@ public class DroneDto implements Serializable {
     @Size(min = 3, max = 50, message = VALIDATION_MODEL_SIZE)
     @ApiModelProperty(notes = "Drone model", example = "12DD", required = true)
     private String model;
+    
+    List<DeliveryDto> deliveries;
 
-    public DroneDto() {
+	public DroneDto() {
     }
 
     public DroneDto(Long id, String brand, String model) {
@@ -64,4 +67,12 @@ public class DroneDto implements Serializable {
     public void setModel(String model) {
         this.model = model;
     }
+
+    public List<DeliveryDto> getDeliveries() {
+		return deliveries;
+	}
+
+	public void setDeliveries(List<DeliveryDto> deliveries) {
+		this.deliveries = deliveries;
+	}
 }
