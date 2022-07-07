@@ -2,6 +2,7 @@ package com.trybe.dronefeeder.models;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.io.Serializable;
@@ -19,16 +20,14 @@ public class Drone implements Serializable {
     private Long id;
     private String brand;
     private String model;
-    
-    @OneToMany(mappedBy = "drone", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Delivery> deliveries;
+
+    @OneToMany(mappedBy = "drone", fetch = FetchType.EAGER)
+    private List<Delivery> deliveries = new ArrayList<>();
 
     public Drone(Long id, String brand, String model) {
         this.id = id;
         this.brand = brand;
         this.model = model;
-        this.deliveries = new ArrayList<Delivery>();
     }
 
     public Drone() {

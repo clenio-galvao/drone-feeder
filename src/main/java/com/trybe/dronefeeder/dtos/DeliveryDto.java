@@ -52,6 +52,8 @@ public class DeliveryDto implements Serializable {
   @NotNull(message = "drone" + VALIDATION_IS_REQUIRED)
   @ApiModelProperty(notes = "drone id", example = "2", required = true)
   private Drone drone;
+
+
   
   public DeliveryDto() {}
   

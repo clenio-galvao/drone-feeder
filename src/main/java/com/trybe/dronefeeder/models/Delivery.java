@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /** model class delivery. */
 @Entity
@@ -26,15 +27,19 @@ public class Delivery implements Serializable {
   private Long id;
   private String latitudeWithdrawal;
   private String longitudeWithdrawal;
+
+  @JsonFormat(pattern = "dd-MM-yyyy")
   private LocalDateTime dateWithdrawal;
 
   private String latitudeDelivery;
   private String longitudeDelivery;
+
+  @JsonFormat(pattern = "dd-MM-yyyy")
   private LocalDateTime dateDelivery;
 
   private String videoNameDelivery;
   
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @ManyToOne
   @JoinColumn(name = "drone_id")
   @JsonBackReference
   private Drone drone;

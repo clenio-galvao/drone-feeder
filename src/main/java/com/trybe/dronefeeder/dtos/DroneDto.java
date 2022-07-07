@@ -1,6 +1,7 @@
 package com.trybe.dronefeeder.dtos;
 
 
+import com.trybe.dronefeeder.models.Delivery;
 import com.trybe.dronefeeder.models.Drone;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -46,6 +47,11 @@ public class DroneDto implements Serializable {
         this.id = entity.getId();
         this.brand = entity.getBrand();
         this.model = entity.getModel();
+    }
+
+    public DroneDto(Drone entity, List<Delivery> deliveries) {
+        this(entity);
+        deliveries.forEach(drone -> this.deliveries.add(new DeliveryDto(drone)));
     }
 
     public Long getId() {

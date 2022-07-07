@@ -1,6 +1,7 @@
 package com.trybe.dronefeeder.controllers;
 
 import com.trybe.dronefeeder.dtos.DeliveryDto;
+import com.trybe.dronefeeder.dtos.DeliveryResponseDto;
 import com.trybe.dronefeeder.models.Delivery;
 
 import io.swagger.annotations.Api;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Api(value = "Delivery", tags = "Delivery")
 public interface DeliveryApi {
   @ApiOperation(value = "Get a paginated list of registered drones", tags = "Drone")
-  public ResponseEntity<List<Delivery>> findAll(@RequestParam("droneId") Long droneId);
+  public ResponseEntity<List<DeliveryResponseDto>> findAll(@RequestParam("droneId") Long droneId);
 
   @ApiOperation(value = "Get a registered drone by providing ID", tags = "Drone")
   public ResponseEntity<DeliveryDto> findById(@PathVariable Long id);

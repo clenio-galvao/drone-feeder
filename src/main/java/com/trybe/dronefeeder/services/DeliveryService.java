@@ -13,6 +13,7 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
 import com.trybe.dronefeeder.dtos.DeliveryDto;
+import com.trybe.dronefeeder.dtos.DeliveryResponseDto;
 import com.trybe.dronefeeder.models.Delivery;
 import com.trybe.dronefeeder.models.Drone;
 import com.trybe.dronefeeder.repositories.DeliveryRepository;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -53,7 +55,7 @@ public class DeliveryService {
   
   /** find all with filter. */
   @Transactional(readOnly = true)
-  public List<Delivery> findAll(Long droneId) {
+  public List<DeliveryResponseDto> findAll(Long droneId) {
     List<Delivery> listDeliveries;
     
     if (droneId == 0) {    	
@@ -62,8 +64,8 @@ public class DeliveryService {
       listDeliveries = deliveryRepository
           .findAllByDrone(droneRepository.getById(droneId));
     }
-    
-    return listDeliveries;
+
+    return listDeliveries.stream().map(item -> new DeliveryResponseDto(item)).collect(Collectors.toList());
   }
   
   /** find by id method. */
@@ -95,11 +97,10 @@ public class DeliveryService {
 
   /** collected package method. */
   @Transactional
-  public DeliveryDto collectedPackage(Long id) {
+  public void collectedPackage(Long id) {
     Delivery entity = getById(id);
     entity.setDateWithdrawal(LocalDateTime.now());
-    entity = deliveryRepository.save(entity);
-    return new DeliveryDto(entity);
+    deliveryRepository.save(entity);
   }
 
   /**
@@ -113,7 +114,7 @@ public class DeliveryService {
   
     LocalDateTime newDate = LocalDateTime.now();
     entity.setDateDelivery(newDate);
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     String fileName = newDate.format(formatter) + "-delivery-" + id;
   
     entity.setVideoNameDelivery(fileName);

@@ -1,6 +1,7 @@
 package com.trybe.dronefeeder.controllers;
 
 import com.trybe.dronefeeder.dtos.DeliveryDto;
+import com.trybe.dronefeeder.dtos.DeliveryResponseDto;
 import com.trybe.dronefeeder.models.Delivery;
 import com.trybe.dronefeeder.services.DeliveryService;
 import java.io.IOException;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,10 +35,11 @@ public class DeliveryController implements DeliveryApi {
   private DeliveryService deliveryService;
 
   @GetMapping
-  public ResponseEntity<List<Delivery>> findAll(
+  public ResponseEntity<List<DeliveryResponseDto>> findAll(
       @RequestParam("droneId") Long droneId) {
-    List<Delivery> list = deliveryService.findAll(droneId);
-    return ResponseEntity.ok(list);
+    List<DeliveryResponseDto> all = deliveryService.findAll(droneId);
+    all.stream().forEach(item -> System.out.println(item));
+    return ResponseEntity.ok(all);
   }
 
   @GetMapping(value = "/{id}")
@@ -75,9 +78,9 @@ public class DeliveryController implements DeliveryApi {
    * []@throws IOException exception
    * */
   @PutMapping(value = "/collected/{id}")
-  public ResponseEntity<DeliveryDto> collectedPackage(@PathVariable long id) {
-    DeliveryDto deliveryDto = deliveryService.collectedPackage(id);
-    return ResponseEntity.ok(deliveryDto);
+  public ResponseEntity<?> collectedPackage(@PathVariable long id) {
+    deliveryService.collectedPackage(id);
+    return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
   /** download a video. */
